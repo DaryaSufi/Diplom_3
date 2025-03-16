@@ -1,16 +1,14 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.wait import WebDriverWait
+from constants import Constants
+from locators.password_recovery_page_locators import PasswordRecoveryPageLocators
+from pages.base_page import BasePage
+import allure
+class PasswordRecoveryPage(BasePage):
+    def __init__(self, driver):
+        super().__init__(driver)
+        self.driver = driver
+    @allure.step('Открываем личный кабинет')
+    def open_personal_account(self):
+        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((PasswordRecoveryPageLocators.personal_account_buttom)))
+        self.driver.find_element(*PasswordRecoveryPageLocators.personal_account_buttom).click()
