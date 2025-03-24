@@ -1,23 +1,21 @@
 import allure
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from locators.password_recovery_page_locators import PasswordRecoveryPageLocators
 from pages.base_page import BasePage
 from locators.personal_account_page_locatos import PersonalAccountPageLocators
-
+from constants import Constants
 
 class PersonalAccountPage(BasePage):
     def __init__(self, driver):
         super().__init__(driver)
-        self.driver = driver
+        self.url = Constants.BASE_URL
+
+    @allure.step('Переходим на сайт для заказа бургеров')
+    def open(self):
+        self.go_to_site(self.url)
 
     @allure.step('Открываем личный кабинет')
     def open_personal_account(self):
-        WebDriverWait(self.driver, 20).until(lambda d: d.execute_script("return document.readyState") == "complete")
-        WebDriverWait(self.driver, 20).until(EC.element_to_be_clickable((PasswordRecoveryPageLocators.personal_account_button)))
-        element=self.driver.find_element(*PasswordRecoveryPageLocators.personal_account_button)
-        self.driver.execute_script("arguments[0].click();", element)
-        WebDriverWait(self.driver, 20).until(lambda d: d.execute_script("return document.readyState") == "complete")
+        self.click_element_via_js(PasswordRecoveryPageLocators.personal_account_button)
 
 
     @allure.step('Создаем пользователя и авторизуемся')
@@ -27,29 +25,28 @@ class PersonalAccountPage(BasePage):
             "email": user_info['user']['email'],
             "password": payload['password']
         }
-        WebDriverWait(self.driver, 10).until( EC.element_to_be_clickable((PersonalAccountPageLocators.input_email_entrance)))
+        self.wait_for_element_to_be_clickable(PersonalAccountPageLocators.input_email_entrance)
         self.fill_form(PersonalAccountPageLocators.input_email_entrance, login_data["email"])
-        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((PersonalAccountPageLocators.input_password_entrance)))
+        self.wait_for_element_to_be_clickable(PersonalAccountPageLocators.input_password_entrance)
         self.fill_form(PersonalAccountPageLocators.input_password_entrance, login_data["password"])
-        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((PersonalAccountPageLocators.entrance_button)))
-        element=self.driver.find_element(*PersonalAccountPageLocators.entrance_button)
-        self.driver.execute_script("arguments[0].click();", element)
-        WebDriverWait(self.driver, 20).until(lambda d: d.execute_script("return document.readyState") == "complete")
+        self.click_element_via_js(PersonalAccountPageLocators.entrance_button)
 
     @allure.step('Открываем раздел история заказов')
     def open_history_orders(self):
-        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((PasswordRecoveryPageLocators.personal_account_button)))
-        element=self.driver.find_element(*PasswordRecoveryPageLocators.personal_account_button)
-        self.driver.execute_script("arguments[0].click();", element)
-        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((PersonalAccountPageLocators.history_orders_button)))
-        element2=self.driver.find_element(*PersonalAccountPageLocators.history_orders_button)
-        self.driver.execute_script("arguments[0].click();", element2)
+        self.wait_for_element_to_be_clickable(PasswordRecoveryPageLocators.personal_account_button)
+        self.click_element_via_js(PasswordRecoveryPageLocators.personal_account_button)
+        self.wait_for_element_to_be_clickable(PersonalAccountPageLocators.history_orders_button)
+        self.click_element_via_js(PersonalAccountPageLocators.history_orders_button)
 
     @allure.step('Выходим из аккаунта')
     def exit_personal_account(self):
-        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((PersonalAccountPageLocators.button_exit)))
-        element=self.driver.find_element(*PersonalAccountPageLocators.button_exit)
-        self.driver.execute_script("arguments[0].click();", element)
+        self.wait_for_element_to_be_clickable(PersonalAccountPageLocators.button_exit)
+        self.click_element_via_js(PersonalAccountPageLocators.button_exit)
+
+    @allure.step('Проверяем видимость входа в систему')
+    def is_sign_entrance_visible(self):
+        return self.is_element_visible(PersonalAccountPageLocators.sign_entrance)
+
 
 
 

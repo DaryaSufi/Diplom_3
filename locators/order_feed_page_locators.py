@@ -1,6 +1,7 @@
 from selenium.webdriver.common.by import By
 class OrderFeedPageLocators:
     order_feed = (By.XPATH, "//li[@class='undefined ml-2']")
+    order_feed_2 = (By.XPATH, "//a[contains(@class,'AppHeader_header__link__3D_hX') and @href='/feed']")
     input_email_entrance = (By.XPATH, "//input[@class='text input__textfield text_type_main-default' and @type='text']")
     input_password_entrance = (By.XPATH, "//input[@class='text input__textfield text_type_main-default' and @type='password']")
     entrance_button = (By.XPATH,"//button[@class='button_button__33qZ0 button_button_type_primary__1O7Bx button_button_size_medium__3zxIa']")
@@ -21,3 +22,5 @@ class OrderFeedPageLocators:
     constructor_button = (By.XPATH, "//a[contains(@class, 'AppHeader_header__link__3D_hX') and .//p[text()='Конструктор']]")
     number_of_orders_for_today = (By.XPATH, "(//p[@class='OrderFeed_number__2MbrQ text text_type_digits-large'])[2]")
     list_of_orders_in_work = (By.XPATH, "//ul[@class='OrderFeed_orderListReady__1YFem OrderFeed_orderList__cBvyi']")
+    inv_element = (By.CSS_SELECTOR, ".Modal_modal_overlay__x2ZCr")
+    ingridient_target = (By.XPATH, "//div[@class='constructor-element constructor-element_pos_top']")
